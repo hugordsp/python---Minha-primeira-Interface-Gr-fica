@@ -49,7 +49,7 @@ class Funcs():
         lista = self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes 
         ORDER BY nome_cliente ASC; """) # cod, nome_cliente, telefone, cidade
         for i in lista:
-            self.listaCli.insert("", END, values=i)
+            self.listaCli.insert("", END, values=1)
         self.desconecta_bd()
 
 class Aplication(Funcs):
