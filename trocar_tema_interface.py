@@ -1,8 +1,9 @@
 import os
+from webbrowser import BackgroundBrowser
 os.system('cls')
 from tkinter import * #módulo para interface gráfica
 from tkinter import ttk #Para importar função de lista para o tkinter
-import sqlite3
+
 
 class Aplication():
     def __init__(self):
@@ -12,9 +13,7 @@ class Aplication():
         self.frames_de_tela()
         self.Widgets_frame_1()
         self.Widgets_frame_2()
-        self.Montar_tabelas()
         self.root.mainloop()
-    
 
     def tela(self):
         self.root.title("Cadastro de Clientes")
@@ -24,6 +23,7 @@ class Aplication():
         self.root.maxsize(width= 900, height=640)
         self.root.minsize(width= 700, height=500)
         
+
     def frames_de_tela (self):   
         #Frame superior 
         self.frame_1 = Frame(self.root, bd = 4, bg = 'lightgrey', 
@@ -33,10 +33,10 @@ class Aplication():
         self.frame_2 = Frame(self.root, bd = 4, bg = 'lightgrey', 
                                         highlightbackground= 'black', highlightthickness=1)
         self.frame_2.place(relx= 0.02, rely=0.515, relwidth=0.96, relheight=0.46)
-    
+
     def Widgets_frame_1 (self):
         #Botões:
-        self.bt_limpar = Button(self.frame_1, text= "Limpar", font=('verdana', '9'), command= self.limpa_tela )
+        self.bt_limpar = ttk.Button(self.frame_1, text= "Limpar")
         self.bt_limpar.place(relx= 0.2, rely=0.1, relwidth=0.1, relheight= 0.15)   
 
         self.bt_buscar = Button(self.frame_1, text= "Buscar", font=('verdana', '9'))
@@ -56,25 +56,25 @@ class Aplication():
         self.lb_codigo = Label(self.frame_1, text= 'Código:', bg='lightgrey')
         self.lb_codigo.place(relx=0.05, rely=0.05)
 
-        self.codigo_entry = Entry(self.frame_1, bd=2)
+        self.codigo_entry = Entry(self.frame_1)
         self.codigo_entry.place(relx=0.05, rely=0.15, relwidth= 0.078)
         #2-Nome;
         self.lb_nome = Label(self.frame_1, text= 'Nome:', bg='lightgrey')
         self.lb_nome.place(relx=0.05, rely=0.35)
 
-        self.nome_entry = Entry(self.frame_1, bd=2)
+        self.nome_entry = Entry(self.frame_1)
         self.nome_entry.place(relx=0.05, rely=0.45, relwidth= 0.9)
         #2-Telefone;
         self.lb_telefone = Label(self.frame_1, text= 'Telefone:', bg='lightgrey')
         self.lb_telefone.place(relx=0.05, rely=0.6)
 
-        self.telefone_entry = Entry(self.frame_1, bd=2)
+        self.telefone_entry = Entry(self.frame_1)
         self.telefone_entry.place(relx=0.05, rely=0.7, relwidth= 0.4)
         #2-Cidade;
         self.lb_cidade = Label(self.frame_1, text= 'Cidade:', bg='lightgrey')
         self.lb_cidade.place(relx=0.5, rely=0.6)
 
-        self.cidade_entry = Entry(self.frame_1, bd=2)
+        self.cidade_entry = Entry(self.frame_1)
         self.cidade_entry.place(relx=0.5, rely=0.7, relwidth= 0.45)
    
     def Widgets_frame_2(self): 
@@ -103,7 +103,7 @@ class Aplication():
         #Gerando Scrol Horizontal
         self.scrollistaH = ttk.Scrollbar(self.frame_2, orient= 'horizontal')
         self.listaCli.configure(xscroll=self.scrollistaH.set)
-        self.scrollistaH.place(relx=0.01, rely=0.86, relwidth= 0.99, relheight=0.12)
+        self.scrollistaH.place(relx=0.01, rely=0.86, relwidth= 0.98, relheight=0.12)
         
         #selecionar tipo de tema (alt, clam, default)
         self.style.theme_use('winnative')
@@ -112,31 +112,5 @@ class Aplication():
         self.style.configure('Treeview', background='silver', foreground='black',rowheight='25', fieldbackground= 'white', bd=1)
         self.style.map('Treeview', background=[('selected', 'green')])
 
-    def limpa_tela(self): 
-        self.codigo_entry.delete(0, END)
-        self.nome_entry.delete(0, END)
-        self.telefone_entry.delete(0, END)
-        self.cidade_entry.delete(0, END)
-    
-    def Conn_BancoDeDados(self):
-        self.conn = sqlite3.connect('clientes.bd')
-        self.cursor = self.conn.cursor()
-
-    def Desc_BancoDeDados(self):
-        self.conn.close()
-
-    def Montar_tabelas(self):   
-        self.Conn_BancoDeDados(); print('Conectando ao banco de dados')
-
-        self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS clientes (
-                cod INTEGER PRIMARY KEY,
-                nome_cliente CHAR(40) NOT NULL,
-                telefone INTEGER(20),
-                cidade CHAR(40) 
-            );
-        """)
-        self.conn.commit(); print('Banco de dados criado')
-        self.Desc_BancoDeDados()
 
 Aplication()
